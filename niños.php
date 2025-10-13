@@ -5,22 +5,26 @@ if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
 
-$nombre = $conexion->real_escape_string($_POST['nombre']);
-$edad = intval($_POST['edad']);
-$tema = $conexion->real_escape_string($_POST['tema']);
+$nombre = trim($_POST['nombre']);
+$edad = trim($_POST['edad']);
+$tema = trim($_POST['tema']);
 
-$sql = "INSERT INTO `registro niño1` (Nombre, Edad, `Tema de dificultad`) 
-        VALUES ('$nombre', $edad, '$tema')";
-
-$mensaje = "";
-
-if ($conexion->query($sql) === TRUE) {
-    $mensaje = "✅ Registro guardado exitosamente.";
-} else {
-    $mensaje = "❌ Error al guardar: " . $conexion->error;
+if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/", $nombre)) {
+    die("El nombre solo puede contener letras y espacios.");
 }
 
-$conexion->close();
+if (!preg_match("/^\d{1,2}$/", $edad) || $edad < 1 || $edad > 18) {
+    die("La edad debe ser un número entre 1 y 18.");
+}
+
+if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/", $tema)) {
+    die("El tema de dificultad solo puede contener letras y espacios.");
+}
+
+$nombre = $conexion->real_escape_string($nombre);
+$edad = intval($edad);
+$tema = $conexion->real_escape_string($tema);
+
 ?>
 
 <!DOCTYPE html>
