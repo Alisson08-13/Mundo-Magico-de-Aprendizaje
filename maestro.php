@@ -5,23 +5,34 @@ if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
 
-$nombre = $conexion->real_escape_string($_POST['nombre']);
-$correo = $conexion->real_escape_string($_POST['correo']);
-$numero = $conexion->real_escape_string($_POST['numero']);
-$grado = $conexion->real_escape_string($_POST['grado']);
+$nombre = trim($_POST['nombre']);
+$correo = trim($_POST['correo']);
+$numero = trim($_POST['numero']);
+$grado = trim($_POST['grado']);
 
-$sql = "INSERT INTO `registro maestros` (Nombre, Correo, Numero, Grado)
-        VALUES ('$nombre', '$correo', '$numero', '$grado')";
-
-$mensaje = "";
-
-if ($conexion->query($sql) === TRUE) {
-    $mensaje = "✅ Registro exitoso.";
-} else {
-    $mensaje = "❌ Error al guardar: " . $conexion->error;
+// Validaciones del lado del servidor
+if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/", $nombre)) {
+    die("❌ Error: El nombre solo debe contener letras y espacios.");
 }
 
-$conexion->close();
+if (!preg_match("/^\d{10}$/", $numero)) {
+    die("❌ Error: El número debe contener exactamente 10 dígitos.");
+}
+
+if (!preg_match("/^[1-9]$/", $grado)) {
+    die("❌ Error: El grado debe ser un número entre 1 y 9.");
+}
+
+if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+    die("❌ Error: Correo inválido.");
+}
+
+// Limpieza de datos para inserción
+$nombre = $conexion->real_escape_string($nombre);
+$correo = $conexion->real_escape_string($correo);
+$numero = $conexion->real_escape_string($numero);
+$grado = $conexion->real_escape_string($grado);
+
 ?>
 
 <!DOCTYPE html>
