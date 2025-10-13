@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio | Aprende a Leer</title>
+    <style>
+        /* Fuente divertida (opcional) */
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka One', cursive;
+            background: linear-gradient(to right top, #74ebd5, #9face6);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .decoracion {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-size: cover;
+            animation: flotar 6s ease-in-out infinite alternate;
+            opacity: 0.4;
+        }
+
+        .decoracion.nube {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/414/414927.png');
+        }
+
+        .decoracion.estrella {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/616/616490.png');
+            animation-duration: 8s;
+        }
+
+        @keyframes flotar {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-20px); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 700px;
+            margin: 50px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .levels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            justify-items: center;
+        }
+
+        .levels a {
+            padding: 15px 20px;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #4fc3f7, #2196f3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .levels a:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .registro-links {
+            margin-top: 40px;
+        }
+
+        .registro-links a {
+            display: inline-block;
+            margin: 5px 12px;
+            color: #f5f5f5;
+            font-size: 16px;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            background-color: #ffca28;
+            transition: background-color 0.3s ease;
+        }
+
+        .registro-links a:hover {
+            background-color: #fdd835;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #eeeeee;
+        }
+
+        @media (max-width: 600px) {
+            .levels {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Figuras decorativas -->
+    <div class="decoracion nube" style="top: 30px; left: 20px;"></div>
+    <div class="decoracion estrella" style="top: 100px; right: 30px;"></div>
+    <div class="decoracion nube" style="bottom: 40px; left: 40px;"></div>
+    <div class="decoracion estrella" style="bottom: 60px; right: 60px;"></div>
+
+    <div class="container">
+        <h1>🌟 Mundo Mágico del Aprendizaje</h1>
+        <p>Selecciona tu nivel y comienza tu gran aventura de lectura.</p>
+
+        <div class="levels">
+            <a href="vocales.html">🅰️ Vocales</a>
+            <a href="unir-vocales.html">🔠 Unir Vocales</a>
+            <a href="abecedario.html">🔡 Abecedario</a>
+            <a href="palabras-faciles.html">📝 Palabras fáciles</a>
+            <a href="oraciones.html">✍️ Oraciones</a>
+            <a href="nivel1.html">📘 Nivel 1</a>
+            <a href="nivel2.html">📗 Nivel 2</a>
+            <a href="nivel3.html">📙 Nivel 3</a>
+        </div>
+
+        <div class="registro-links">
+            <p>¿Aún no te has registrado?</p>
+            <a href="niños.html">👦 Registrar Niño</a>
+            <a href="maestro.html">🎓 Registrar Maestro</a>
+            <a href="tutores.html">🧑‍🏫 Registrar Tutor</a>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 Aprende a Leer - Todos los derechos reservados
+        </div>
+    </div>
+</body>
+</html>
