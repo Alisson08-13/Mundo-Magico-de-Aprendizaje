@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Niño</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right top, #00c6ff, #0072ff);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #e0f7fa;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input::placeholder {
+            color: #d0ecff;
+        }
+
+        input[type="submit"] {
+            background-color: #0288d1;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0277bd;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #e3f2fd;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Registro de Niño</h2>
+        <form action="niños.php" method="POST">
+            <label for="nombre">Nombre del niño:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ej. Luisito" required>
+
+            <label for="edad">Edad:</label>
+            <input type="number" id="edad" name="edad" min="1" max="18" required>
+
+            <label for="tema">Tema de dificultad:</label>
+            <input type="text" id="tema" name="tema" placeholder="Ej. Matemáticas" required>
+
+            <input type="submit" value="Registrar Niño">
+        </form>
+        <div class="footer">
+            &copy; 2025 Sistema de Registro de Niños
+        </div>
+    </div>
+</body>
+</html>
