@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right top, #00c6ff, #0072ff);
+            background: linear-gradient(to right top, #efffb7, #f2ffce);
             height: 100vh;
             margin: 0;
             display: flex;
@@ -22,7 +22,7 @@
             width: 100%;
             max-width: 400px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            color: #fff;
+            color: #000000;
         }
 
         h2 {
@@ -34,7 +34,7 @@
             display: block;
             margin-bottom: 6px;
             font-weight: bold;
-            color: #e0f7fa;
+            color: #000000;
         }
 
         input[type="text"],
@@ -45,17 +45,17 @@
             border: none;
             border-radius: 8px;
             background-color: rgba(255, 255, 255, 0.3);
-            color: #fff;
+            color: #000000;
             font-size: 16px;
         }
 
         input::placeholder {
-            color: #d0ecff;
+            color: #000000;
         }
 
         input[type="submit"] {
             background-color: #0288d1;
-            color: white;
+            color: rgb(0, 0, 0);
             padding: 12px;
             border: none;
             border-radius: 8px;
@@ -73,25 +73,54 @@
             text-align: center;
             margin-top: 20px;
             font-size: 13px;
-            color: #e3f2fd;
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
     <div class="form-container">
         <h2>Registro de Niño</h2>
-        <form action="niños.php" method="POST">
-            <label for="nombre">Nombre del niño:</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Ej. Luisito" required>
+       <form action="niños.php" method="POST" onsubmit="return validarFormulario()">
+    <label for="nombre">Nombre del niño:</label>
+    <input type="text" id="nombre" name="nombre" placeholder="Ej. Luisito" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras y espacios">
 
-            <label for="edad">Edad:</label>
-            <input type="number" id="edad" name="edad" min="1" max="18" required>
+    <label for="edad">Edad:</label>
+    <input type="number" id="edad" name="edad" min="1" max="18" required oninput="if(this.value.length > 2) this.value = this.value.slice(0,2)">
 
-            <label for="tema">Tema de dificultad:</label>
-            <input type="text" id="tema" name="tema" placeholder="Ej. Matemáticas" required>
+    <label for="tema">Tema de dificultad:</label>
+    <input type="text" id="tema" name="tema" placeholder="Ej. Matemáticas" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras y espacios">
 
-            <input type="submit" value="Registrar Niño">
-        </form>
+    <input type="submit" value="Registrar Niño">
+</form>
+
+<script>
+function validarFormulario() {
+    const nombre = document.getElementById('nombre').value.trim();
+    const edad = document.getElementById('edad').value.trim();
+    const tema = document.getElementById('tema').value.trim();
+
+    const regexLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    const regexEdad = /^\d{1,2}$/;
+
+    if (!regexLetras.test(nombre)) {
+        alert('El nombre solo puede contener letras y espacios.');
+        return false;
+    }
+
+    if (!regexEdad.test(edad) || edad < 1 || edad > 18) {
+        alert('La edad debe ser un número entre 1 y 18, máximo 2 dígitos.');
+        return false;
+    }
+
+    if (!regexLetras.test(tema)) {
+        alert('El tema de dificultad solo puede contener letras y espacios.');
+        return false;
+    }
+
+    return true;
+}
+</script>
+
         <div class="footer">
             &copy; 2025 Sistema de Registro de Niños
         </div>
