@@ -10,22 +10,22 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-$nombre = $_POST['nombre'];
-$telefono = $_POST['telefono'];
-$correo = $_POST['correo'];
+$nombre = trim($_POST['nombre']);
+$telefono = trim($_POST['telefono']);
+$correo = trim($_POST['correo']);
 
-$stmt = $conn->prepare("INSERT INTO `registro tutor` (Nombre, Telefono, Correo) VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $nombre, $telefono, $correo);
-
-$mensaje = "";
-if ($stmt->execute()) {
-    $mensaje = "✅ Registro guardado correctamente.";
-} else {
-    $mensaje = "❌ Error al guardar: " . $stmt->error;
+if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/", $nombre)) {
+    die("❌ Error: El nombre solo debe contener letras y espacios.");
 }
 
-$stmt->close();
-$conn->close();
+if (!preg_match("/^\d{10}$/", $telefono)) {
+    die("❌ Error: El teléfono debe contener exactamente 10 dígitos.");
+}
+
+if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+    die("❌ Error: Correo electrónico inválido.");
+}
+
 ?>
 
 <!DOCTYPE html>
