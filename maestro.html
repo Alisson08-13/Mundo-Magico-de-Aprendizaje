@@ -1,136 +1,129 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Registro de Maestro</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right top, #00c6ff, #0072ff);
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  <meta charset="UTF-8">
+  <title>Registro de Maestro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+    
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
 
-        .form-container {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            padding: 40px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            color: #fff;
-        }
+    body {
+      margin: 0;
+      font-family: 'Fredoka One', cursive;
+      background: radial-gradient(circle, #fff0f8, #f8f0ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+    }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+    /* Botón volver */
+    .btn-volver {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #ff85d4;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 133, 212, 0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-            color: #e0f7fa;
-        }
+    .btn-volver:hover {
+      background-color: #ff9de2;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(255, 133, 212, 0.5);
+    }
 
-        input[type="text"],
-        input[type="email"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: none;
-            border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.3);
-            color: #fff;
-            font-size: 16px;
-        }
+    .form-container {
+      background: #ffffff;
+      border-radius: 25px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
 
-        input::placeholder {
-            color: #d0ecff;
-        }
+    h2 {
+      background-color: #ff85d4;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 50px;
+      display: inline-block;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 12px rgba(255, 133, 212, 0.4);
+    }
 
-        input[type="submit"] {
-            background-color: #0288d1;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s ease;
-        }
+    input[type=text], input[type=email] {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      background: #fdfdfd;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem;
+      color: #555;
+      transition: border-color 0.3s ease;
+    }
 
-        input[type="submit"]:hover {
-            background-color: #0277bd;
-        }
+    input[type=text]:focus, input[type=email]:focus {
+      border-color: #b280d4;
+      outline: none;
+      box-shadow: 0 0 8px rgba(178, 128, 212, 0.3);
+    }
 
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #e3f2fd;
-        }
-    </style>
+    input[type=submit] {
+      background-color: #b280d4;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      font-family: 'Fredoka One', cursive;
+      padding: 15px 25px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(178, 128, 212, 0.4);
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    input[type=submit]:hover {
+      transform: translateY(-3px);
+      background-color: #c190e4;
+      box-shadow: 0 8px 20px rgba(178, 128, 212, 0.6);
+    }
+  </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Registro de Maestro</h2>
-      <form action="maestro.php" method="POST" onsubmit="return validarFormulario()">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" placeholder="Ej. María López"
-           required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras y espacios.">
 
-    <label for="correo">Correo:</label>
-    <input type="email" id="correo" name="correo" placeholder="correo@ejemplo.com" required>
+  <!-- Botón para volver al inicio -->
+  <a href="index.html" class="btn-volver">⬅ Inicio</a>
 
-    <label for="numero">Número:</label>
-    <input type="text" id="numero" name="numero" placeholder="Ej. 5551234567"
-           required pattern="\d{10}" title="Debe tener exactamente 10 dígitos numéricos.">
-
-    <label for="grado">Grado:</label>
-    <input type="text" id="grado" name="grado" placeholder="Ej. 3"
-           required pattern="[1-9]" title="Debe ser un número entre 1 y 9.">
-
-    <input type="submit" value="Registrar Maestro">
-</form>
-
-<script>
-function validarFormulario() {
-    const nombre = document.getElementById("nombre").value.trim();
-    const numero = document.getElementById("numero").value.trim();
-    const grado = document.getElementById("grado").value.trim();
-
-    const regexNombre = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-    const regexNumero = /^\d{10}$/;
-    const regexGrado = /^[1-9]$/;
-
-    if (!regexNombre.test(nombre)) {
-        alert("❌ El nombre solo puede contener letras y espacios.");
-        return false;
-    }
-
-    if (!regexNumero.test(numero)) {
-        alert("❌ El número debe contener exactamente 10 dígitos.");
-        return false;
-    }
-
-    if (!regexGrado.test(grado)) {
-        alert("❌ El grado debe ser un solo número entre 1 y 9.");
-        return false;
-    }
-
-    return true;
-}
-</script>
-
-        <div class="footer">
-            &copy; 2025 Sistema de Registro de Maestros
-        </div>
-    </div>
+  <div class="form-container">
+    <h2>Registro de Maestro 🎓</h2>
+    <form action="maestro.php" method="POST">
+      <input type="text" name="nombre" placeholder="Nombre" required>
+      <input type="email" name="correo" placeholder="Correo" required>
+      <input type="text" name="numero" placeholder="Número" required>
+      <input type="text" name="grado" placeholder="Grado" required>
+      <input type="submit" value="Registrar">
+    </form>
+  </div>
 </body>
 </html>
+
