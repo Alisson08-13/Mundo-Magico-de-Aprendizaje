@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro | Silabario Mágico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+    :root {
+      --color-rojo-magico: #ff3366;
+      --color-amarillo-brillante: #ffc300;
+      --color-verde-menta: #66cc99;
+      --color-morado-lila: #bb88ff;
+      --color-azul-cielo: #4a90e2;
+      --color-rosa-fuerte: #ff69b4;
+      --color-naranja-brillante: #ff8800;
+      --color-fondo-principal: rgba(255, 255, 255, 0.96);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Fredoka One', cursive;
+      overflow-x: hidden;
+      background: linear-gradient(180deg, #fef6ff, #e3f4ff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* 🌟 Fondo animado */
+    .figura {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: flotarFondo 10s infinite ease-in-out;
+      z-index: 0;
+    }
+
+    @keyframes flotarFondo {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-25px) rotate(15deg); }
+    }
+
+    .figura.estrellas { background: var(--color-amarillo-brillante); width: 60px; height: 60px; top: 5%; left: 8%; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+    .figura.circulo { background: var(--color-verde-menta); width: 70px; height: 70px; top: 60%; left: 10%; }
+    .figura.letra { background: var(--color-morado-lila); width: 80px; height: 80px; top: 30%; right: 10%; clip-path: polygon(0 0, 100% 0, 100% 70%, 60% 70%, 80% 100%, 20% 100%, 40% 70%, 0 70%); }
+    .figura.triangulo { background: var(--color-rosa-fuerte); width: 90px; height: 90px; bottom: 10%; right: 15%; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+
+    header {
+      background: linear-gradient(135deg, #ff9acc, var(--color-rojo-magico));
+      border-radius: 40px;
+      padding: 20px 30px;
+      box-shadow: 0 10px 20px rgba(255, 99, 132, 0.4);
+      color: white;
+      text-align: center;
+      font-size: 2.6rem;
+      text-shadow: 3px 3px 0 #c3173f;
+      width: 90%;
+      max-width: 900px;
+      z-index: 2;
+    }
+
+    /* 📚 Introducción */
+    .intro-box {
+      background: var(--color-fondo-principal);
+      border-radius: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      max-width: 800px;
+      width: 95%;
+      padding: 25px 30px;
+      margin: 25px 0;
+      text-align: justify;
+      line-height: 1.6;
+      color: #444;
+      font-size: 1.2rem;
+      position: relative;
+      z-index: 2;
+      animation: aparecer 1s ease;
+    }
+
+    @keyframes aparecer {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .intro-box strong {
+      color: var(--color-rojo-magico);
+    }
+
+    /* ✨ Personaje */
+    .personaje {
+      position: absolute;
+      right: -90px;
+      bottom: -30px;
+      width: 230px;
+      transform: rotate(5deg);
+      animation: flotar 3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes flotar {
+      0%,100% {transform: translateY(0) rotate(5deg);}
+      50% {transform: translateY(-12px) rotate(5deg);}
+    }
+
+    main {
+      background: var(--color-fondo-principal);
+      border-radius: 25px;
+      padding: 30px;
+      max-width: 700px;
+      width: 95%;
+      text-align: center;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+      z-index: 2;
+    }
+
+    h2 { font-size: 1.5rem; color:#444; margin-bottom: 20px; }
+
+    .registro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .registro-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 3px solid var(--color-naranja-brillante);
+      color: var(--color-naranja-brillante);
+      border-radius: 25px;
+      padding: 14px;
+      font-size: 1.15rem;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 8px 0 var(--color-rojo-magico), 0 10px 15px rgba(0,0,0,0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      gap: 12px;
+    }
+
+    .registro-btn img { width:44px; height:44px; }
+
+    .registro-btn:hover { transform: translateY(-6px); box-shadow: 0 12px 0 var(--color-rojo-magico), 0 18px 24px rgba(0,0,0,0.12); }
+
+    footer { margin-top: 28px; color: #555; font-size: 0.9rem; z-index:2; }
+
+    @media (max-width:600px){
+      header{ font-size:2rem; padding:16px; }
+      .registro-btn{ font-size:1rem; padding:12px; flex-direction:column; }
+      .registro-btn img{ margin:0; }
+      .personaje{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🌈 Figuras de fondo -->
+  <div class="figura estrellas"></div>
+  <div class="figura circulo"></div>
+  <div class="figura letra"></div>
+  <div class="figura triangulo"></div>
+
+  <header>✨ Mundo mágico de aprendizaje ✨</header>
+
+  <!-- 🌟 Introducción -->
+  <section class="intro-box">
+    <p><strong>¡Bienvenido al Silabario Mágico!</strong> 🌟 Aquí los pequeños exploradores descubrirán un mundo lleno de colores, sonidos y juegos donde aprender las <strong>vocales</strong>, el <strong>abecedario</strong> y las <strong>sílabas</strong> será tan divertido como jugar.</p>
+    <p>Cada sección tiene actividades didácticas con imágenes, sonidos y retos que harán que leer y escribir sea una aventura mágica. ¡Prepárate para aprender jugando y deja volar tu imaginación!</p>
+    <img class="personaje" src="https://cdn-icons-png.flaticon.com/512/8138/8138895.png" alt="Personaje mágico animado">
+  </section>
+
+  <main>
+    <h2>Elige tu tipo de cuenta para comenzar</h2>
+
+    <div class="registro-grid">
+      <a href="niños.html" id="registrar-nino" class="registro-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Niño">
+        👦 Cuenta de Niño
+      </a>
+
+      <a href="maestro.html" id="registrar-maestro" class="registro-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616506.png" alt="Maestro">
+        🎓 Cuenta de Maestro
+      </a>
+
+      <a href="tutores.html" id="registrar-tutor" class="registro-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616497.png" alt="Tutor">
+        🧑‍🏫 Cuenta de Tutor
+      </a>
+    </div>
+  </main>
+
+  <footer>&copy; 2025 Silabario Mágico - ¡Aprender es divertido!</footer>
+</body>
+</html>
+
+
