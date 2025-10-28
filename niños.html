@@ -1,129 +1,143 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Registro de Niño</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right top, #efffb7, #f2ffce);
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  <meta charset="UTF-8">
+  <title>Registro de Niño | Silabario Mágico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+    
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
 
-        .form-container {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            padding: 40px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            color: #000000;
-        }
+    body {
+      margin: 0;
+      font-family: 'Fredoka One', cursive;
+      background: radial-gradient(circle, #fff0f8, #f8f0ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+    }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+    /* Botón para volver al inicio */
+    .btn-volver {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #ff85d4;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 133, 212, 0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-            color: #000000;
-        }
+    .btn-volver:hover {
+      background-color: #ff9de2;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(255, 133, 212, 0.5);
+    }
 
-        input[type="text"],
-        input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: none;
-            border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.3);
-            color: #000000;
-            font-size: 16px;
-        }
+    .form-container {
+      background: #ffffff;
+      border-radius: 25px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
 
-        input::placeholder {
-            color: #000000;
-        }
+    h2 {
+      background-color: #ff85d4;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 50px;
+      display: inline-block;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 12px rgba(255, 133, 212, 0.4);
+    }
 
-        input[type="submit"] {
-            background-color: #0288d1;
-            color: rgb(0, 0, 0);
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s ease;
-        }
+    label { 
+      display: block; 
+      text-align: left; 
+      margin-top: 10px; 
+      color: #555;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
 
-        input[type="submit"]:hover {
-            background-color: #0277bd;
-        }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      background: #fdfdfd;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem;
+      color: #555;
+      transition: border-color 0.3s ease;
+    }
 
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #ffffff;
-        }
-    </style>
+    input[type="text"]:focus, input[type="number"]:focus {
+      border-color: #b280d4;
+      outline: none;
+      box-shadow: 0 0 8px rgba(178, 128, 212, 0.3);
+    }
+
+    input[type="submit"] {
+      background-color: #b280d4;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      font-family: 'Fredoka One', cursive;
+      padding: 15px 25px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(178, 128, 212, 0.4);
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    input[type="submit"]:hover {
+      transform: translateY(-3px);
+      background-color: #c190e4;
+      box-shadow: 0 8px 20px rgba(178, 128, 212, 0.6);
+    }
+  </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Registro de Niño</h2>
-       <form action="niños.php" method="POST" onsubmit="return validarFormulario()">
-    <label for="nombre">Nombre del niño:</label>
-    <input type="text" id="nombre" name="nombre" placeholder="Ej. Luisito" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras y espacios">
 
-    <label for="edad">Edad:</label>
-    <input type="number" id="edad" name="edad" min="1" max="18" required oninput="if(this.value.length > 2) this.value = this.value.slice(0,2)">
+  <!-- Botón volver -->
+  <a href="index.html" class="btn-volver">⬅ Inicio</a>
 
-    <label for="tema">Tema de dificultad:</label>
-    <input type="text" id="tema" name="tema" placeholder="Ej. Matemáticas" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras y espacios">
+  <div class="form-container">
+    <h2>Registro de Niño 👦</h2>
+    <form action="niños.php" method="POST">
+      <label>Nombre:</label>
+      <input type="text" name="nombre" required>
 
-    <input type="submit" value="Registrar Niño">
-</form>
+      <label>Edad:</label>
+      <input type="number" name="edad" required min="1" max="18">
 
-<script>
-function validarFormulario() {
-    const nombre = document.getElementById('nombre').value.trim();
-    const edad = document.getElementById('edad').value.trim();
-    const tema = document.getElementById('tema').value.trim();
+      <label>Tema de dificultad:</label>
+      <input type="text" name="tema" required>
 
-    const regexLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-    const regexEdad = /^\d{1,2}$/;
+      <input type="submit" value="Registrar">
+    </form>
+  </div>
 
-    if (!regexLetras.test(nombre)) {
-        alert('El nombre solo puede contener letras y espacios.');
-        return false;
-    }
-
-    if (!regexEdad.test(edad) || edad < 1 || edad > 18) {
-        alert('La edad debe ser un número entre 1 y 18, máximo 2 dígitos.');
-        return false;
-    }
-
-    if (!regexLetras.test(tema)) {
-        alert('El tema de dificultad solo puede contener letras y espacios.');
-        return false;
-    }
-
-    return true;
-}
-</script>
-
-        <div class="footer">
-            &copy; 2025 Sistema de Registro de Niños
-        </div>
-    </div>
 </body>
 </html>
