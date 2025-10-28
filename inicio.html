@@ -175,9 +175,31 @@
             .levels { grid-template-columns: 1fr 1fr; }
             #btnAvance { top: 10px; right: 10px; font-size: 1rem; padding: 8px 15px; }
         }
+        .btn-volver {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #ff85d4;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 133, 212, 0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-volver:hover {
+      background-color: #ff9de2;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(255, 133, 212, 0.5);
+    }
     </style>
 </head>
 <body>
+     <a href="index.html" class="btn-volver">⬅ Inicio</a>
     <!-- Botón Avance FUERA del encabezado -->
     <button id="btnAvance">📊 Avance</button>
 
