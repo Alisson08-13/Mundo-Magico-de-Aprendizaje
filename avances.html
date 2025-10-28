@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Avances | Silabario Mágico</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+    :root{
+      --color-rojo-magico:#ff3366;
+      --color-amarillo-brillante:#ffc300;
+      --color-verde-menta:#66cc99;
+      --color-azul-cielo:#4a90e2;
+      --color-naranja-brillante:#ff8800;
+      --bg: #f0f8ff;
+      --card: rgba(255,255,255,0.98);
+    }
+    body{
+      margin:0;
+      font-family:'Fredoka One',cursive;
+      background:var(--bg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      min-height:100vh;
+    }
+    .wrap{
+      width:100%;
+      max-width:920px;
+      background:var(--card);
+      padding:28px;
+      border-radius:20px;
+      box-shadow:0 18px 50px rgba(0,0,0,0.12);
+      position:relative;
+    }
+    header{
+      background:linear-gradient(135deg,#ff9acc,var(--color-rojo-magico));
+      color:white;
+      padding:16px;
+      border-radius:12px;
+      text-align:center;
+      font-size:1.6rem;
+      margin-bottom:18px;
+      box-shadow:0 8px 0 rgba(0,0,0,0.06);
+    }
+    .user-box{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+    .user-avatar{
+      width:72px;
+      height:72px;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--color-amarillo-brillante),var(--color-naranja-brillante));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:30px;
+    }
+    .user-info{font-size:1.05rem;color:#333}
+    .progress-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,250,0.95));
+      padding:16px;
+      border-radius:14px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.06);
+    }
+    .bar-outer{height:22px;background:#eee;border-radius:14px;overflow:hidden;margin-top:10px}
+    .bar-inner{height:100%;width:0;border-radius:14px;background:linear-gradient(90deg,var(--color-verde-menta),var(--color-azul-cielo));transition:width 1.1s ease;}
+    .meta{margin-top:10px;color:#444;font-weight:700}
+    .activities{margin-top:14px;display:grid;gap:8px}
+    .act{background:white;padding:10px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.04);font-weight:700}
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      font-weight:800;
+    }
+    .btn-clear{
+      background:linear-gradient(135deg,#ff9acc,#ff3366);
+      color:white;
+    }
+    /* 🔹 Nuevo botón tipo "Volver al Menú Principal" (idéntico al de letras_abc.php) */
+    .btn-menu{
+      display:inline-block;
+      background: linear-gradient(to right, #ffb6c1, #ff69b4);
+      color: white;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 30px;
+      padding: 14px 40px;
+      box-shadow: 0 6px 0 #d44d93, 0 8px 18px rgba(0,0,0,0.2);
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.25s ease;
+    }
+    .btn-menu:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 0 #d44d93, 0 12px 20px rgba(0,0,0,0.25);
+    }
+    .btn-menu:active {
+      transform: translateY(2px);
+      box-shadow: 0 4px 0 #d44d93, 0 6px 12px rgba(0,0,0,0.2);
+    }
+    .footer-btn {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    @media(max-width:640px){
+      .user-box{flex-direction:column;align-items:flex-start}
+      .user-avatar{width:62px;height:62px}
+      .btn-menu{font-size:1rem;padding:12px 28px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>📘 Mi Avance — Silabario Mágico</header>
+
+    <div id="contenido">
+      <!-- Contenido dinámico -->
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-clear" id="btn-limpiar">🧹 Borrar mi registro</button>
+    </div>
+
+    <!-- 🔹 Nuevo botón igual al de tus actividades -->
+    <div class="footer-btn">
+      <a href="inicio.html" class="btn-menu">⬅ Volver al Menú Principal</a>
+    </div>
+  </div>
+
+  <script>
+    function obtenerUsuarioActivo() {
+      const id = localStorage.getItem('usuarioActualId');
+      if(!id) return null;
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')||'[]');
+      return usuarios.find(u=>u.id===id) || null;
+    }
+
+    function guardarUsuarios(usuarios) {
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
+
+    function render() {
+      const cont = document.getElementById('contenido');
+      cont.innerHTML = '';
+      const usuario = obtenerUsuarioActivo();
+      if(!usuario) {
+        cont.innerHTML = `
+          <div style="padding:18px;background:linear-gradient(90deg,#fff7e6,#fff);border-radius:12px;">
+            <p style="font-weight:800;color:#333">No hay usuario activo.</p>
+            <p style="color:#666">Regístrate para que tus avances se guarden. Serás redirigido al registro.</p>
+            <div style="margin-top:12px"><a href="registroini.html" class="btn-menu">Ir a registro</a></div>
+          </div>
+        `;
+        return;
+      }
+
+      const totalLevels = Number(localStorage.getItem('totalLevels') || 0);
+      const completadas = Array.isArray(usuario.progreso) ? usuario.progreso.length : 0;
+      const porcentaje = totalLevels > 0 ? Math.round((completadas / totalLevels) * 100) : 0;
+
+      const inicial = (usuario.nombre && usuario.nombre[0]) ? usuario.nombre[0].toUpperCase() : 'U';
+
+      cont.innerHTML = `
+        <div class="user-box">
+          <div class="user-avatar">${inicial}</div>
+          <div class="user-info">
+            <div style="font-size:1.15rem;font-weight:900">${usuario.nombre}</div>
+            <div style="color:#777;margin-top:4px">${usuario.tipo} • ${completadas} / ${totalLevels} actividades</div>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-weight:900">Progreso</div>
+            <div style="font-weight:900">${porcentaje}%</div>
+          </div>
+          <div class="bar-outer">
+            <div id="bar" class="bar-inner" style="width:0%"></div>
+          </div>
+          <div class="meta">Actividades completadas: <strong>${completadas}</strong></div>
+        </div>
+
+        <div style="margin-top:14px">
+          <div style="font-weight:900;margin-bottom:8px">Últimas actividades</div>
+          <div class="activities" id="lista-act">
+            ${ (usuario.progreso && usuario.progreso.length) 
+              ? usuario.progreso.slice().reverse().map(p=>`<div class="act">${p.actividad} <span style="float:right;color:#888;font-weight:600;font-size:12px">${new Date(p.cuando).toLocaleString()}</span></div>`).join('')
+              : '<div style="color:#666">Aún no hay actividades registradas.</div>'}
+          </div>
+        </div>
+      `;
+
+      requestAnimationFrame(()=> {
+        const bar = document.getElementById('bar');
+        bar.style.width = porcentaje + '%';
+      });
+    }
+
+    document.getElementById('btn-limpiar').addEventListener('click', ()=>{
+      const usuario = obtenerUsuarioActivo();
+      if(!usuario) return alert('No hay usuario activo.');
+      if(!confirm('¿Seguro que quieres borrar tu registro (progreso)? Esto no eliminará tu cuenta, solo tus avances.')) return;
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+      const idx = usuarios.findIndex(u => u.id === usuario.id);
+      if(idx === -1) return;
+      usuarios[idx].progreso = [];
+      guardarUsuarios(usuarios);
+      alert('Tus avances han sido borrados.');
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
