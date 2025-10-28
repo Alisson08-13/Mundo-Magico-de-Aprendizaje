@@ -1,91 +1,53 @@
 <?php
-$conexion = new mysqli("localhost", "root", "", "database");
+include("conexion.php");
 
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nombre = $_POST["nombre"];
+    $correo = $_POST["correo"];
+    $numero = $_POST["numero"];
+    $grado  = $_POST["grado"];
+
+    // Insertar datos del maestro
+    $sql = "INSERT INTO registro_maestros1 (Nombre, Correo, Numero, Grado)
+            VALUES ('$nombre', '$correo', '$numero', '$grado')";
+
+    if ($conn->query($sql) === TRUE) {
+        // También guardamos un registro inicial en la tabla de avances
+        $avance = "INSERT INTO avances (nombre, tipo_usuario, nivel, progreso)
+                   VALUES ('$nombre', 'Maestro', 'Preparando clases', 10)";
+        $conn->query($avance);
+
+        echo "
+        <html><head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Registro Exitoso</title>
+        <style>
+          body{font-family:'Fredoka One',cursive;background:linear-gradient(135deg,#fdfdfd,#fdfdfd);
+          display:flex;align-items:center;justify-content:center;height:100vh;}
+          .msg{background:white;border-radius:25px;padding:40px;text-align:center;
+          box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+          .emoji{font-size:60px;animation:brinca 1.5s infinite ease-in-out;}
+          h1{color:#ff3366;margin-bottom:10px;}
+          @keyframes brinca{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+        </style>
+        </head><body>
+        <div class='msg'>
+          <div class='emoji'>🎉</div>
+          <h1>¡Registro exitoso!</h1>
+          <p>Bienvenido Maestro/a ✏️</p>
+          <p>Serás redirigido al menú en unos segundos...</p>
+        </div>
+        <script>
+          localStorage.setItem('registrado', 'true');
+          localStorage.setItem('tipoUsuario', 'Maestro');
+          localStorage.setItem('nombreUsuario', '" . addslashes($nombre) . "');
+          setTimeout(()=>window.location='inicio.html',3000);
+        </script>
+        </body></html>";
+    } else {
+        echo "Error: " . $conn->error;
+    }
 }
-
-$nombre = trim($_POST['nombre']);
-$correo = trim($_POST['correo']);
-$numero = trim($_POST['numero']);
-$grado = trim($_POST['grado']);
-
-// Validaciones del lado del servidor
-if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/", $nombre)) {
-    die("❌ Error: El nombre solo debe contener letras y espacios.");
-}
-
-if (!preg_match("/^\d{10}$/", $numero)) {
-    die("❌ Error: El número debe contener exactamente 10 dígitos.");
-}
-
-if (!preg_match("/^[1-9]$/", $grado)) {
-    die("❌ Error: El grado debe ser un número entre 1 y 9.");
-}
-
-if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-    die("❌ Error: Correo inválido.");
-}
-
-// Limpieza de datos para inserción
-$nombre = $conexion->real_escape_string($nombre);
-$correo = $conexion->real_escape_string($correo);
-$numero = $conexion->real_escape_string($numero);
-$grado = $conexion->real_escape_string($grado);
-
+$conn->close();
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Resultado del Registro</title>
-    <style>
-        body {
-            background: linear-gradient(to right top, #00c6ff, #0072ff);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .message-box {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            padding: 40px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        p {
-            font-size: 20px;
-            margin-bottom: 30px;
-        }
-
-        a {
-            background-color: #0288d1;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        a:hover {
-            background-color: #0277bd;
-        }
-    </style>
-</head>
-<body>
-    <div class="message-box">
-        <p><?php echo $mensaje; ?></p>
-        <a href="maestro.html">⬅ Volver al formulario</a>
-    </div>
-</body>
-</html>
