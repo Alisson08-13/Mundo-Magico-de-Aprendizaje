@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ordena las Letras | Aprende a Leer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Fredoka One', cursive;
+      background: url('https://previews.123rf.com/images/vectorinka/vectorinka1010/vectorinka101000092/8082290-children-s-drawings-doodle-background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      max-width: 600px;
+      width: 100%;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      user-select: none;
+    }
+
+    h1 {
+      color: #ff3399;
+      margin-bottom: 10px;
+      font-size: 2.8rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      color: #666;
+    }
+
+    .image-box {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(255, 51, 153, 0.3);
+    }
+
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+    }
+
+    .scramble-area {
+      margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      min-height: 60px;
+    }
+
+    .letter-box {
+      background-color: #ff99c2;
+      color: white;
+      padding: 15px 18px;
+      font-size: 1.8rem;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .letter-box:hover {
+      transform: scale(1.1);
+    }
+
+    .target-area {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      min-height: 60px;
+    }
+
+    .target-slot {
+      width: 50px;
+      border-bottom: 3px solid #ff3399;
+      font-size: 2rem;
+      color: #ff3399;
+      text-align: center;
+      user-select: none;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      background-color: #ff66b2;
+      border: none;
+      padding: 12px 20px;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      flex: 1;
+      margin: 0 5px;
+    }
+
+    button:hover {
+      background-color: #e60073;
+    }
+
+    button:disabled {
+      background-color: #f5a7c4;
+      cursor: default;
+    }
+
+    .feedback {
+      margin-top: 25px;
+      font-size: 1.6rem;
+      font-weight: bold;
+      min-height: 2.2em;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Ordena la Palabra</h1>
+    <p class="subtitle">Toca las letras para colocarlas en orden.</p>
+
+    <div class="image-box">
+      <img id="imgWord" src="" alt="Imagen pista palabra">
+    </div>
+
+    <div class="scramble-area" id="scrambleArea"></div>
+    <div class="target-area" id="targetArea"></div>
+
+    <div class="buttons">
+      <button id="btnCheck">Comprobar</button>
+      <button id="btnNext" disabled>Siguiente</button>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+  </main>
+
+  <script>
+    const todasLasPalabras = [
+      { palabra: "gato", imagen: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+      { palabra: "sol", imagen: "https://cdn-icons-png.flaticon.com/512/869/869869.png" },
+      { palabra: "flor", imagen: "https://cdn-icons-png.flaticon.com/512/2935/2935445.png" },
+      { palabra: "mar", imagen: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+      { palabra: "uva", imagen: "https://cdn-icons-png.flaticon.com/512/1995/1995574.png" },
+      { palabra: "pan", imagen: "https://cdn-icons-png.flaticon.com/512/1090/1090954.png" },
+      { palabra: "pez", imagen: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+      { palabra: "luz", imagen: "https://cdn-icons-png.flaticon.com/512/565/565547.png" },
+      { palabra: "pato", imagen: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+      { palabra: "lago", imagen: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+      { palabra: "casa", imagen: "https://cdn-icons-png.flaticon.com/512/167/167707.png" },
+      { palabra: "nube", imagen: "https://cdn-icons-png.flaticon.com/512/1197/1197102.png" },
+      { palabra: "mesa", imagen: "https://cdn-icons-png.flaticon.com/512/892/892458.png" },
+      { palabra: "taza", imagen: "https://cdn-icons-png.flaticon.com/512/2921/2921823.png" },
+      { palabra: "luna", imagen: "https://cdn-icons-png.flaticon.com/512/414/414927.png" },
+      { palabra: "foca", imagen: "https://cdn-icons-png.flaticon.com/512/1998/1998495.png" },
+      { palabra: "roca", imagen: "https://cdn-icons-png.flaticon.com/512/4830/4830930.png" },
+      { palabra: "palo", imagen: "https://cdn-icons-png.flaticon.com/512/2646/2646715.png" },
+      { palabra: "puma", imagen: "https://cdn-icons-png.flaticon.com/512/1998/1998563.png" },
+      { palabra: "reir", imagen: "https://cdn-icons-png.flaticon.com/512/742/742751.png" },
+      { palabra: "nido", imagen: "https://cdn-icons-png.flaticon.com/512/1998/1998515.png" },
+      { palabra: "cima", imagen: "https://cdn-icons-png.flaticon.com/512/1998/1998498.png" },
+      { palabra: "vela", imagen: "https://cdn-icons-png.flaticon.com/512/1785/1785063.png" },
+      { palabra: "rana", imagen: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+      { palabra: "piso", imagen: "https://cdn-icons-png.flaticon.com/512/1995/1995574.png" },
+      { palabra: "coco", imagen: "https://cdn-icons-png.flaticon.com/512/427/427735.png" },
+      { palabra: "lupa", imagen: "https://cdn-icons-png.flaticon.com/512/2698/2698102.png" },
+      { palabra: "jugo", imagen: "https://cdn-icons-png.flaticon.com/512/934/934964.png" },
+      { palabra: "sapo", imagen: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+      { palabra: "leon", imagen: "https://cdn-icons-png.flaticon.com/512/616/616408.png" }
+    ];
+
+    const totalPalabrasPorRonda = 5;
+    let seleccionadas = [];
+    let indice = 0;
+
+    const imgElem = document.getElementById('imgWord');
+    const scrambleArea = document.getElementById('scrambleArea');
+    const targetArea = document.getElementById('targetArea');
+    const btnCheck = document.getElementById('btnCheck');
+    const btnNext = document.getElementById('btnNext');
+    const feedback = document.getElementById('feedback');
+
+    function mezclar(array) {
+      let m = array.length, t, i;
+      while (m) {
+        i = Math.floor(Math.random() * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+      }
+      return array;
+    }
+
+    function iniciar() {
+      const copia = [...todasLasPalabras];
+      seleccionadas = mezclar(copia).slice(0, totalPalabrasPorRonda);
+      indice = 0;
+      feedback.textContent = "";
+      btnNext.disabled = true;
+      btnCheck.disabled = false;
+      cargarPalabra();
+    }
+
+    function cargarPalabra() {
+      const obj = seleccionadas[indice];
+      imgElem.src = obj.imagen;
+      imgElem.alt = `Imagen de ${obj.palabra}`;
+
+      scrambleArea.innerHTML = "";
+      targetArea.innerHTML = "";
+      feedback.textContent = "";
+
+      const letras = obj.palabra.split('');
+      letras.forEach(() => {
+        const slot = document.createElement('div');
+        slot.classList.add('target-slot');
+        targetArea.appendChild(slot);
+      });
+
+      const letrasDesordenadas = mezclar([...letras]);
+      letrasDesordenadas.forEach(letra => {
+        const box = document.createElement('div');
+        box.classList.add('letter-box');
+        box.textContent = letra;
+        box.addEventListener('click', () => colocarLetra(box));
+        scrambleArea.appendChild(box);
+      });
+    }
+
+    function colocarLetra(box) {
+      const slots = Array.from(targetArea.children);
+      for (let slot of slots) {
+        if (slot.textContent === "") {
+          slot.textContent = box.textContent;
+          box.style.visibility = "hidden";
+          break;
+        }
+      }
+    }
+
+    function comprobar() {
+      const obj = seleccionadas[indice];
+      const intento = Array.from(targetArea.children).map(el => el.textContent).join('');
+
+      if (intento.length !== obj.palabra.length) {
+        feedback.textContent = "¡Primero completa la palabra!";
+        feedback.style.color = "#cc0000";
+        return;
+      }
+
+      if (intento === obj.palabra) {
+        feedback.textContent = "¡Muy bien! 🎉";
+        feedback.style.color = "#00aa00";
+      } else {
+        feedback.textContent = `Ups... era "${obj.palabra}".`;
+        feedback.style.color = "#cc0000";
+      }
+
+      btnCheck.disabled = true;
+      btnNext.disabled = false;
+    }
+
+    function siguiente() {
+      indice++;
+      if (indice < seleccionadas.length) {
+        cargarPalabra();
+        btnCheck.disabled = false;
+        btnNext.disabled = true;
+      } else {
+        terminar();
+      }
+    }
+
+    function terminar() {
+      feedback.innerHTML = `¡Terminaste las ${totalPalabrasPorRonda} palabras!<br>🎊 ¡Muy bien! 🎊`;
+      btnCheck.disabled = true;
+      btnNext.disabled = true;
+
+      const reiniciarBtn = document.createElement('button');
+      reiniciarBtn.textContent = "Reiniciar";
+      reiniciarBtn.style.marginTop = "20px";
+      reiniciarBtn.addEventListener('click', () => {
+        iniciar();
+        reiniciarBtn.remove();
+      });
+      document.querySelector('.buttons').appendChild(reiniciarBtn);
+    }
+
+    btnCheck.addEventListener('click', comprobar);
+    btnNext.addEventListener('click', siguiente);
+
+    iniciar(); // Iniciar al cargar
+  </script>
+</body>
+</html>
