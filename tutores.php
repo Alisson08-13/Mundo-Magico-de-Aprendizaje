@@ -1,82 +1,52 @@
 <?php
-$servername = "localhost";
-$username = "root";        
-$password = "";          
-$dbname = "database";     
+include("conexion.php");
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nombre = $_POST["nombre"];
+    $telefono = $_POST["telefono"];
+    $correo = $_POST["correo"];
 
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+    // Insertar datos del tutor
+    $sql = "INSERT INTO registro_tutor1 (Nombre, Telefono, Correo)
+            VALUES ('$nombre', '$telefono', '$correo')";
+
+    if ($conn->query($sql) === TRUE) {
+        // También guardamos un registro inicial en la tabla de avances
+        $avance = "INSERT INTO avances (nombre, tipo_usuario, nivel, progreso)
+                   VALUES ('$nombre', 'Tutor', 'Acompañando al niño', 15)";
+        $conn->query($avance);
+
+        echo "
+        <html><head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Registro Exitoso</title>
+        <style>
+          body{font-family:'Fredoka One',cursive;background:linear-gradient(135deg,#fdfdfd,#fdfdfd);
+          display:flex;align-items:center;justify-content:center;height:100vh;}
+          .msg{background:white;border-radius:25px;padding:40px;text-align:center;
+          box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+          .emoji{font-size:60px;animation:brinca 1.5s infinite ease-in-out;}
+          h1{color:#ff3366;margin-bottom:10px;}
+          @keyframes brinca{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+        </style>
+        </head><body>
+        <div class='msg'>
+          <div class='emoji'>🎉</div>
+          <h1>¡Registro exitoso!</h1>
+          <p>Bienvenido Tutor/a 💕</p>
+          <p>Serás redirigido al menú en unos segundos...</p>
+        </div>
+        <script>
+          localStorage.setItem('registrado', 'true');
+          localStorage.setItem('tipoUsuario', 'Tutor');
+          localStorage.setItem('nombreUsuario', '" . addslashes($nombre) . "');
+          setTimeout(()=>window.location='inicio.html',3000);
+        </script>
+        </body></html>";
+    } else {
+        echo "Error: " . $conn->error;
+    }
 }
-
-$nombre = trim($_POST['nombre']);
-$telefono = trim($_POST['telefono']);
-$correo = trim($_POST['correo']);
-
-if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/", $nombre)) {
-    die("❌ Error: El nombre solo debe contener letras y espacios.");
-}
-
-if (!preg_match("/^\d{10}$/", $telefono)) {
-    die("❌ Error: El teléfono debe contener exactamente 10 dígitos.");
-}
-
-if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-    die("❌ Error: Correo electrónico inválido.");
-}
-
+$conn->close();
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Resultado del Registro</title>
-    <style>
-        body {
-            background: linear-gradient(to right top, #00c6ff, #0072ff);
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .message-box {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 16px;
-            text-align: center;
-            color: #fff;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-        }
-
-        p {
-            font-size: 20px;
-            margin-bottom: 30px;
-        }
-
-        a {
-            text-decoration: none;
-            background-color: #0288d1;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        a:hover {
-            background-color: #0277bd;
-        }
-    </style>
-</head>
-<body>
-    <div class="message-box">
-        <p><?php echo $mensaje; ?></p>
-        <a href="tutores.html">⬅ Volver al formulario</a>
-    </div>
-</body>
-</html>
