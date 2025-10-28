@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Inicio | Aprende a Leer</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+    body {
+        margin: 0;
+        font-family: 'Fredoka One', cursive;
+        background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        color: #333;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .container {
+        background: rgba(255 255 255 / 0.9);
+        border-radius: 25px;
+        max-width: 700px;
+        width: 100%;
+        padding: 30px 40px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    h1 {
+        color: #ff6f91;
+        margin-bottom: 30px;
+        user-select: none;
+    }
+
+    .registro-opciones a, .registro-opciones button {
+        display: inline-block;
+        background: linear-gradient(145deg, #ff6f91, #ff477e);
+        color: white;
+        text-decoration: none;
+        padding: 15px 25px;
+        border-radius: 20px;
+        font-weight: 700;
+        margin: 10px 15px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        user-select: none;
+        border: none;
+    }
+
+    .registro-opciones a:hover, .registro-opciones button:hover {
+        background: linear-gradient(145deg, #ff477e, #ff6f91);
+    }
+
+    .welcome-msg {
+        font-size: 1.6rem;
+        margin-bottom: 25px;
+        color: #333;
+    }
+
+    .logout-btn {
+        margin-top: 30px;
+        background: #555;
+        border-radius: 15px;
+        padding: 10px 20px;
+        font-weight: 700;
+        cursor: pointer;
+        color: white;
+        border: none;
+        user-select: none;
+    }
+
+    .logout-btn:hover {
+        background: #333;
+    }
+
+    .footer {
+        margin-top: 30px;
+        font-size: 14px;
+        color: #666;
+        user-select: none;
+    }
+</style>
+</head>
+<body>
+
+<div id="registro-container" class="container">
+    <h1>🌟 Mundo Mágico del Aprendizaje</h1>
+    <p>Primero debes registrarte para guardar tu progreso o puedes entrar sin registrar.</p>
+    <div class="registro-opciones">
+        <a href="niños.html" id="btn-nino">👦 Registrarse como Niño</a>
+        <a href="maestro.html" id="btn-maestro">🎓 Registrarse como Maestro</a>
+        <a href="tutores.html" id="btn-tutor">🧑‍🏫 Registrarse como Tutor</a>
+    </div>
+    <button id="btn-sinregistro">🚪 Entrar sin registrar</button>
+</div>
+
+<div id="menu-container" class="container hidden" role="main" aria-label="Menú principal">
+    <div class="welcome-msg" id="bienvenida"></div>
+
+    <p>¡Bienvenido al Mundo Mágico del Aprendizaje! Selecciona tu nivel para comenzar.</p>
+
+    <div class="levels" style="display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 15px; margin-top: 20px;">
+        <a href="vocales.html" style="background:#ff4081; color:#fff; border-radius: 18px; padding: 15px; text-decoration:none; font-weight:700;">🦉 Vocales</a>
+        <a href="unir-vocales.html" style="background:#f50057; color:#fff; border-radius: 18px; padding: 15px; text-decoration:none; font-weight:700;">🦆 Unir Vocales</a>
+        <a href="abecedario.html" style="background:#ff6f91; color:#fff; border-radius: 18px; padding: 15px; text-decoration:none; font-weight:700;">🐘 Abecedario</a>
+        <a href="palabras-faciles.html" style="background:#ff80ab; color:#fff; border-radius: 18px; padding: 15px; text-decoration:none; font-weight:700;">🐱 Palabras fáciles</a>
+        <a href="oraciones.html" style="background:#ffb6b9; color:#fff; border-radius: 18px; padding: 15px; text-decoration:none; font-weight:700;">🐒 Oraciones</a>
+        <a href="nivel1.html" style="background:#f48fb1; color:#fff; border-radius: 18px; padding: 15px; text-decoration:none; font-weight:700;">📘 Nivel 1</a>
+        <a href="nivel2.html" style="background:#ec407a; color:#fff; border-radius: 18px; padding: 15px; text-decoration:none; font-weight:700;">📗 Nivel 2</a>
+        <a href="nivel3.html" style="background:#d81b60; color:#fff; border-radius: 18px; padding: 15px; text-decoration:none; font-weight:700;">📙 Nivel 3</a>
+    </div>
+
+    <button class="logout-btn" id="btn-logout">Cerrar sesión</button>
+</div>
+
+<script>
+    const registroCont = document.getElementById('registro-container');
+    const menuCont = document.getElementById('menu-container');
+    const bienvenida = document.getElementById('bienvenida');
+    const btnSinRegistro = document.getElementById('btn-sinregistro');
+    const btnLogout = document.getElementById('btn-logout');
+
+    // Función para mostrar menú con nombre
+    function mostrarMenu(nombre) {
+        bienvenida.textContent = nombre ? `Hola, ${nombre}!` : "Bienvenido!";
+        registroCont.classList.add('hidden');
+        menuCont.classList.remove('hidden');
+    }
+
+    // Mostrar registro (pantalla inicial)
+    function mostrarRegistro() {
+        registroCont.classList.remove('hidden');
+        menuCont.classList.add('hidden');
+    }
+
+    // Comprobar si está registrado (flag guardado)
+    function estaRegistrado() {
+        return localStorage.getItem('usuarioRegistrado') === "true";
+    }
+
+    // Obtener nombre guardado (opcional)
+    function obtenerNombre() {
+        return localStorage.getItem('nombreUsuario') || "";
+    }
+
+    // Al cargar la página
+    window.onload = () => {
+        if (estaRegistrado()) {
+            mostrarMenu(obtenerNombre());
+        } else {
+            mostrarRegistro();
+        }
+    }
+
+    // Al entrar sin registro
+    btnSinRegistro.addEventListener('click', () => {
+        // No guardamos nada, mostramos menú sin nombre y sin guardar avances
+        mostrarMenu("");
+    });
+
+    // Al cerrar sesión
+    btnLogout.addEventListener('click', () => {
+        // Eliminar datos de registro
+        localStorage.removeItem('usuarioRegistrado');
+        localStorage.removeItem('nombreUsuario');
+        mostrarRegistro();
+    });
+
+    // NOTA IMPORTANTE:
+    // En tus páginas niños.html, maestro.html y tutores.html,
+    // debes guardar en localStorage cuando el registro sea exitoso:
+    // localStorage.setItem('usuarioRegistrado', 'true');
+    // localStorage.setItem('nombreUsuario', 'Nombre del usuario');
+</script>
+
+<div class="footer" style="text-align:center; margin-top: 30px; color:#555; user-select:none;">
+    &copy; 2025 Aprende a Leer - Todos los derechos reservados
+</div>
+
+</body>
+</html>
